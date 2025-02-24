@@ -1,0 +1,21 @@
+camera:
+  pos: [0, 0, 0]
+  dir: [0, 0, 1]
+  up: [0, 1, 0]
+  fov: 90
+materials:
+  - type: Normal
+    color: [1.0, 0.0, 1.0]
+lights:
+  - type: Point
+    pos: [0, 0.0, 0]
+    intensity: [1.0, 1.0, 1.0]
+objects:
+  - type: MetaBalls
+    material_ref: 0
+    threshold: 1.0
+    balls:
+      - center: [1.5, 0, 4]
+        power: 0.8
+      - center: [-1.5, 0, 4]
+        power: 0.8
