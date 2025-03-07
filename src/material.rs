@@ -1,8 +1,9 @@
 use derive_more::Deref;
-use glam::Vec3;
 use serde::Deserialize;
 
-use crate::render::Color;
+use crate::{light::Lighting, object::Inter, render::Color, scene::Scene};
+
+pub const DEFAULT_MATERIAL: Material = Material::Normal;
 
 pub type MaterialRef = u32;
 
@@ -10,21 +11,27 @@ pub type MaterialRef = u32;
 pub struct Materials(Vec<Material>);
 
 impl Materials {
-    pub fn color_at(&self, material_ref: MaterialRef, point: Vec3) -> Color {
-        self[material_ref as usize].color_at(point)
+    pub fn new(materials: Vec<Material>) -> Self {
+        Self(materials)
+    }
+
+    pub fn get(&self, material_ref: MaterialRef) -> &Material {
+        &self[material_ref as usize]
     }
 }
 
 #[derive(Clone, Debug, Deserialize)]
 #[serde(tag = "type")]
 pub enum Material {
-    Normal { color: Color },
+    Simple { color: Color },
+    Normal,
 }
 
 impl Material {
-    pub fn color_at(&self, _point: Vec3) -> Color {
+    pub fn color_at(&self, _scene: &Scene, inter: &Inter, lighting: &Lighting) -> Color {
         match self {
-            Material::Normal { color } => *color,
+            Material::Simple { color } => color * lighting.force,
+            Material::Normal => inter.normal.map(|c| 0.5 * (c + 1.0)),
         }
     }
 }

@@ -28,6 +28,14 @@ pub struct Camera {
 }
 
 impl Camera {
+    /// Sets the camera to look at a specific target position
+    pub fn look_at(pos: Vec3, target: Vec3, up: Vec3, fov: f32) -> Self {
+        let dir = (target - pos).normalize();
+        let right = dir.cross(up).normalize();
+        let up = right.cross(dir).normalize();
+        Self { pos, dir, up, fov }
+    }
+
     fn right(&self) -> Vec3 {
         self.dir.cross(self.up).normalize()
     }

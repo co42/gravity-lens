@@ -1,7 +1,9 @@
 [package]
 name = "gravity-lens"
+authors = ["Corentin Regal <corentin.regal@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
+default-run = "gravity_lens"
 
 [dependencies]
 anyhow = "1"
@@ -9,5 +11,14 @@ clap = { version = "4", features = ["derive"] }
 derive_more = { version = "2", features = ["deref", "deref_mut"] }
 glam = { version = "0.30", features = ["serde"] }
 image = "0.25"
+macroquad = "0.4"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.9"
+
+[lib]
+name = "gravity_lens"
+path = "src/lib.rs"
+
+[[bin]]
+name = "gravity_lens"
+path = "src/bin.rs"

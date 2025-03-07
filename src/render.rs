@@ -4,27 +4,17 @@ use serde::Deserialize;
 
 use crate::{object::Inter, scene::Scene};
 
-pub fn render(
-    Scene {
-        camera,
-        lights,
-        materials,
-        objects,
-    }: &Scene,
-    out: &Output,
-) -> Vec<Pixel> {
-    camera
+pub fn render(scene: &Scene, out: &Output) -> Vec<Pixel> {
+    scene
+        .camera
         .project(out)
         .map(|px_ray| {
-            let Some(inter) = objects.intersect(&px_ray.ray, out.escape) else {
+            let Some(inter) = scene.objects.intersect(&px_ray.ray, out.escape) else {
                 return Pixel::NoInter;
             };
-            let material_color = materials.color_at(inter.material_ref, px_ray.ray.at(inter.t));
-            let lighting_color = lights.lighting(&px_ray.ray, &inter);
-            Pixel::Inter {
-                inter,
-                color: material_color * lighting_color,
-            }
+            let lighting = scene.lights.lighting(&px_ray.ray, &inter);
+            let color = scene.objects.color_at(scene, &inter, &lighting);
+            Pixel::Inter { inter, color }
         })
         .collect()
 }

@@ -3,12 +3,22 @@ use serde::Deserialize;
 
 use crate::{object::Inter, ray::Ray, render::Color};
 
+#[derive(Clone, Debug)]
+pub struct Lighting {
+    pub force: Vec3,
+}
+
 #[derive(Clone, Debug, Deserialize)]
 pub struct Lights(Vec<Light>);
 
 impl Lights {
-    pub fn lighting(&self, ray: &Ray, inter: &Inter) -> Color {
-        self.0.iter().map(|light| light.lighting(ray, inter)).sum()
+    pub fn new(lights: Vec<Light>) -> Self {
+        Self(lights)
+    }
+
+    pub fn lighting(&self, ray: &Ray, inter: &Inter) -> Lighting {
+        let force = self.0.iter().map(|light| light.lighting(ray, inter)).sum();
+        Lighting { force }
     }
 }
 

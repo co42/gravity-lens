@@ -20,9 +20,9 @@ mod scene;
 struct Cli {
     #[arg(short, long)]
     scene: String,
-    #[arg(long)]
+    #[arg(short, long)]
     width: u32,
-    #[arg(long)]
+    #[arg(short, long)]
     height: u32,
 }
 
