@@ -9,8 +9,10 @@ materials:
   - type: Simple
     color: [0.0, 0.0, 1.0]
 lights:
-  - type: Point
-    pos: [0, 5, 0]
+  - type: Ambient
+    intensity: [0.2, 0.2, 0.2]
+  - type: Directional
+    dir: [0, -1, 0]
     intensity: [1.0, 1.0, 1.0]
 objects:
   - type: MetaBalls

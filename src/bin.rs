@@ -3,16 +3,8 @@ use std::fs;
 use anyhow::Context;
 use clap::Parser;
 
-use crate::render::Output;
-use crate::scene::Scene;
-
-// mod attract;
-mod light;
-mod material;
-mod object;
-mod ray;
-mod render;
-mod scene;
+use gravity_lens::render::{render, Output};
+use gravity_lens::scene::Scene;
 
 /// Ray-trace a scene simulating photon paths warped by gravity
 #[derive(Parser, Debug)]
@@ -38,7 +30,7 @@ fn main() -> anyhow::Result<()> {
     let scene_str = fs::read_to_string(&cli.scene).context("Read scene")?;
     let scene: Scene = serde_yaml::from_str(&scene_str).context("Parse scene")?;
 
-    let pixels = render::render(&scene, &output);
+    let pixels = render(&scene, &output);
     output.save_colors(&pixels, "output.png");
     output.save_normals(&pixels, "output.normals.png");
 

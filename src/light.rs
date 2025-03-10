@@ -25,7 +25,9 @@ impl Lights {
 #[derive(Clone, Debug, Deserialize)]
 #[serde(tag = "type")]
 pub enum Light {
+    Ambient { intensity: Vec3 },
     Point { pos: Vec3, intensity: Vec3 },
+    Directional { dir: Vec3, intensity: Vec3 },
 }
 
 impl Light {
@@ -35,9 +37,14 @@ impl Light {
 
     fn diffuse(&self, ray: &Ray, inter: &Inter) -> Color {
         match self {
+            Light::Ambient { intensity } => *intensity,
             Light::Point { pos, intensity } => {
                 let light_dir = (*pos - ray.at(inter.t)).normalize();
                 let dot = inter.normal.dot(light_dir).clamp(0.0, 1.0);
+                *intensity * dot
+            }
+            Light::Directional { dir, intensity } => {
+                let dot = inter.normal.dot(*dir).clamp(0.0, 1.0);
                 *intensity * dot
             }
         }
