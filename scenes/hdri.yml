@@ -1,0 +1,18 @@
+camera:
+  pos: [0, 0, 0]
+  dir: [0, 0, 1]
+  up: [0, 1, 0]
+  fov: 90
+lights:
+  - type: Hdri
+    # path: "scenes/HDR_marslike_planet.hdr"
+    # path: "scenes/studio_small_09_4k.hdr"
+    path: "scenes/blue_photo_studio_4k.hdr"
+materials:
+  - type: Simple
+    color: [1.0, 1.0, 1.0]
+objects:
+  - type: Sphere
+    material_ref: 0
+    center: [0, 0, 3]
+    radius: 1.0
